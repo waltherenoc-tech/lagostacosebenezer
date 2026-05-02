@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lagos Tacos Ebenezer | Authentic Mexican Flavor</title>
+    <meta name="description" content="Experience the authentic taste of Mexico at Lagos Tacos Ebenezer. Fresh ingredients, traditional recipes, and unforgettable flavors.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#C62828',
+                            orange: '#F57C00',
+                            black: '#121212',
+                            dark: '#1E1E1E',
+                            gold: '#D4AF37'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* Custom Styles & Animations */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #F57C00, #C62828);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-gradient-brand {
+            background: linear-gradient(135deg, #C62828 0%, #F57C00 100%);
+        }
+
+        /* Navbar Transition */
+        #navbar {
+            transition: all 0.3s ease-in-out;
+            background-color: transparent;
+        }
+        #navbar.scrolled {
+            background-color: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* Hover Lifts */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(198, 40, 40, 0.2);
+        }
+
+        /* Gallery Overlay */
+        .gallery-item {
+            overflow: hidden;
+            position: relative;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(198, 40, 40, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Lightbox */
+        #lightbox {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Testimonial Slider */
+        .slide {
+            display: none;
+            animation: fadeEffect 0.8s ease-in-out;
+        }
+        .slide.active {
+            display: block;
+        }
+        @keyframes fadeEffect {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C62828;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F57C00;
+        }
+
+        /* Toast Notification */
+        #toast {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- Fixed Full-Screen Background -->
+    <div class="fixed inset-0 z-0">
+        <img src="https://wlwzooglxpubstgfxvoo.supabase.co/storage/v1/object/sign/web/nuevobirria-ezgif.com-video-to-gif-converter.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hM2VjMmQ4NC1jZTVmLTRiMzItYmRhYy1mODBhZTkwNWI3MzYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ3ZWIvbnVldm9iaXJyaWEtZXpnaWYuY29tLXZpZGVvLXRvLWdpZi1jb252ZXJ0ZXIuZ2lmIiwiaWF0IjoxNzc3Njg1MjQwLCJleHAiOjE4MDkyMjEyNDB9.GYSbAasyeN3fygfqYh9l9Iudky3z_VhlyKC2-pwRARM" alt="Delicious Mexican Tacos" class="w-full h-full object-cover object-center" />
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90"></div>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header id="navbar" class="relative w-full top-0 z-50 py-5 bg-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center group">
+                <img src="https://res.cloudinary.com/dd3tduggc/image/upload/v1777685670/logo_q5ly5j.png" alt="Lagos Tacos Ebenezer Logo" class="h-24 md:h-32 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex gap-8 items-center font-medium">
+                <a href="#" class="text-gray-200 hover:text-brand-orange transition-colors">Home</a>
+                <a href="#" class="text-gray-200 hover:text-brand-orange transition-colors">Menu</a>
+                <a href="#" class="text-gray-200 hover:text-brand-orange transition-colors">Gallery</a>
+                <a href="#" class="text-gray-200 hover:text-brand-orange transition-colors">Contact</a>
+                <a href="#" class="bg-gradient-brand text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-brand-orange/30 transition-all transform hover:scale-105">
+                    Order Now
+                </a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                <i class="ph ph-list text-3xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-black/90 backdrop-blur-md border-t border-gray-800 shadow-xl">
+            <div class="flex flex-col px-4 py-6 space-y-4 text-center">
+                <a href="#" class="mobile-link text-lg text-gray-200 hover:text-brand-orange">Home</a>
+                <a href="#" class="mobile-link text-lg text-gray-200 hover:text-brand-orange">Menu</a>
+                <a href="#" class="mobile-link text-lg text-gray-200 hover:text-brand-orange">Gallery</a>
+                <a href="#" class="mobile-link text-lg text-gray-200 hover:text-brand-orange">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main id="home" class="relative z-10 flex-grow flex items-center justify-center py-20">
+        <div class="text-center px-4 max-w-4xl mx-auto">
+            <span class="text-brand-gold font-medium tracking-[0.2em] uppercase text-sm md:text-base mb-4 block drop-shadow-md">Welcome to</span>
+            <h1 class="font-serif text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-xl">
+                Authentic <br/> <span class="text-gradient drop-shadow-md">Mexican Flavor</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-light drop-shadow-md">
+                Discover the true taste of Mexico. Made with love, fresh ingredients, and generations of family tradition.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#" class="bg-gradient-brand text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-[0_0_20px_rgba(245,124,0,0.5)] transition-all transform hover:-translate-y-1">
+                    Order Now
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 bg-transparent pt-12 pb-8 border-t border-white/20 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
+                
+                <div class="text-center md:text-left">
+                    <a href="#" class="flex items-center justify-center md:justify-start mb-4 group">
+                        <img src="https://res.cloudinary.com/dd3tduggc/image/upload/v1777685670/logo_q5ly5j.png" alt="Lagos Tacos Ebenezer Logo" class="h-24 md:h-32 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+                    </a>
+                    <p class="text-gray-500 max-w-xs">Serving the most authentic and delicious Mexican food since 2010.</p>
+                </div>
+
+                <!-- Social Icons -->
+                <div class="flex gap-4">
+                    <a href="#" class="w-12 h-12 rounded-full bg-brand-dark flex items-center justify-center text-gray-400 hover:bg-brand-orange hover:text-white transition-all transform hover:scale-110 border border-gray-800">
+                        <i class="ph-fill ph-facebook-logo text-2xl"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 rounded-full bg-brand-dark flex items-center justify-center text-gray-400 hover:bg-gradient-to-tr hover:from-orange-500 hover:to-purple-600 hover:text-white transition-all transform hover:scale-110 border border-gray-800">
+                        <i class="ph-fill ph-instagram-logo text-2xl"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 rounded-full bg-brand-dark flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all transform hover:scale-110 border border-gray-800">
+                        <i class="ph-fill ph-youtube-logo text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center border-t border-gray-900 pt-8">
+                <p class="text-gray-400 text-sm">&copy; <span id="year"></span> Lagos Tacos Ebenezer. All rights reserved.</p>
+                <p class="text-gray-500 text-xs mt-2">2026 Enoch Design tech</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Set Copyright Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
